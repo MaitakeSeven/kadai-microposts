@@ -1,14 +1,13 @@
 <div class="text-center">
-    <hi>sign up</hi>
+  <h1>Sign up</h1>
 </div>
 
-<%= form_with(model: @user, local: true) do |f| %>
-      <%= render 'layouts/error_messages', model: f.object %>
-      
 <div class="row">
-    <div class="col-sm-6 offset-sm-3">
-        <%= form_with(model: @user, local: true) do |f| %>
-        <div class="form-group">
+  <div class="col-sm-6 offset-sm-3">
+
+    <%= form_with(model: @user, local: true) do |f| %>
+      
+      <div class="form-group">
         <%= f.label :name, 'Name' %>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
@@ -30,5 +29,5 @@
 
       <%= f.submit 'Sign up', class: 'btn btn-primary btn-block' %>
     <% end %>
-    </div>
+  </div>
 </div>
