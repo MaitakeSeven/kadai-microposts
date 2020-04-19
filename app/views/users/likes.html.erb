@@ -1,5 +1,8 @@
+<h1>LIKES</h1>
+
 <ul class="list-unstyled">
-  <% microposts.each do |micropost| %>
+  <% @micropost.each do |micropost| %>
+  <% if @user.fav_now(micropost) %>
     <li class="media mb-3">
       <img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 50 }) %>" alt="">
       <div class="media-body">
@@ -29,6 +32,6 @@
         </div>
       </div>
     </li>
+    <% end %>
   <% end %>
-  <%= paginate microposts %>
 </ul>

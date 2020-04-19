@@ -31,4 +31,22 @@ class User < ApplicationRecord
     Micropost.where(user_id: self.following_ids + [self.id])
   end
   
+  has_many :favorites
+  has_many :favorite_now, through: :favorites, source: :micropost
+  
+  def fav_in(other_post)#お気に入り登録
+      self.favorites.find_or_create_by(micropost_id: other_post.id)
+      
+  end
+  
+  def fav_out(other_post)#お気に入り解除
+      favorite = self.favorites.find_by(micropost_id: other_post.id)
+      favorite.destroy if favorite
+  end
+  
+  def fav_now(other_post)#お気に入り登録してる？
+      self.favorite_now.include?(other_post)
+  end
+  
+
 end
