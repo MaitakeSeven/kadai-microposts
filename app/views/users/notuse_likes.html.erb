@@ -1,3 +1,4 @@
+
 <div class="row">
   <aside class="col-sm-4">
     <div class="card">
@@ -19,6 +20,41 @@
       <li class="nav-item"><a href="<%= followers_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(followers_user_path(@user)) %>">Followers  <span class="badge badge-secondary"><%= @count_followers %></span></a></li>
       <li class="nav-item"><a href="<%= likes_user_path(@user) %>" class="nav-link <%= 'active' if current_page?(likes_user_path(@user)) %>">Favorites  <span class="badge badge-secondary"><%= @count_favorites %></span></a></li>
     </ul>
-    <%= render 'microposts/microposts', microposts: @microposts %>
+<ul class="list-unstyled">
+  <% @micropost.each do |micropost| %>
+  <% if @user.fav_now(micropost) %>
+    <li class="media mb-3">
+      <img class="mr-2 rounded" src="<%= gravatar_url(micropost.user, { size: 50 }) %>" alt="">
+      <div class="media-body">
+        <div>
+          <%= link_to micropost.user.name, user_path(micropost.user) %> <span class="text-muted">posted at <%= micropost.created_at %></span>
+        </div>
+        <div>
+          <p class="mb-0"><%= micropost.content %></p>
+        </div>
+        <div>
+          <% if current_user == micropost.user %>
+            <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+          <% end %>
+            
+        <% if current_user.fav_now(micropost) #お気に入り解除%>
+            <%= form_with(model: current_user.favorites.find_by(micropost_id: micropost.id), local: true, method: :delete) do |f| %>
+              <%= hidden_field_tag :micropost_id, micropost.id %>
+              <%= f.submit 'お気に入り解除', class: 'btn btn-danger' %>
+            <% end %>
+        <% else#お気に入り %>
+            <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
+               <%= hidden_field_tag :micropost_id, micropost.id %>
+               <%= f.submit 'お気に入り', class: 'btn btn-primary' %>
+            <% end %>
+        <% end %>
+          
+        </div>
+      </div>
+    </li>
+    <% end %>
+  <% end %>
+</ul>
+    
   </div>
 </div>
