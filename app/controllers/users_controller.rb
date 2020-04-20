@@ -43,6 +43,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])#自分のID
     @likes = @user.favorites#自分がお気に入りしてるPostの取得
     @micropost = Micropost.all
+    counts(@user)
   end
 
   private
